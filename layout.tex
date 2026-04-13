@@ -1,0 +1,646 @@
+% ============================================================
+%  Sistemas Operativos — Unidad 1, Clase 1
+%  Introducción a los Sistemas Operativos
+%  Docente: Rodrigo Fuchs Miranda
+%  UTEC — Sede Rivera — Licenciatura en Ingeniería de Datos e IA
+% ============================================================
+\documentclass[xcolor=svgnames]{beamer}
+
+% -----------------------------------------------------------
+% Codificación e idioma
+% -----------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+
+% -----------------------------------------------------------
+% Gráficos, colores y diagramas
+% -----------------------------------------------------------
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+
+% -----------------------------------------------------------
+% Hyperlinks y ajustes de layout
+% -----------------------------------------------------------
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue}
+\usepackage{adjustbox}
+\usepackage{calc}
+
+% -----------------------------------------------------------
+% Símbolos
+% -----------------------------------------------------------
+\usepackage{pifont}
+\usepackage{enumitem}
+\setbeamertemplate{frametitle continuation}{\relax}
+% -----------------------------------------------------------
+% Tema y paleta de colores
+% -----------------------------------------------------------
+\usetheme{Madrid}
+
+\definecolor{mqred}{RGB}{166, 25, 46}
+\definecolor{mqdeepred}{RGB}{118, 35, 47}
+\definecolor{mqgray}{RGB}{55, 58, 54}
+\definecolor{mqlightgray}{RGB}{237, 235, 229}
+\definecolor{mqmagenta}{RGB}{198, 0, 126}
+
+\usecolortheme[named=mqred]{structure}
+\setbeamercolor{title in head/foot}{bg=mqlightgray, fg=mqgray}
+\setbeamercolor{author in head/foot}{bg=mqdeepred}
+\setbeamercolor{page number in head/foot}{bg=mqdeepred, fg=mqlightgray}
+
+% -----------------------------------------------------------
+% Pie de página personalizado
+% -----------------------------------------------------------
+\makeatletter
+\setbeamertemplate{footline}{
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+      \usebeamerfont{author in head/foot}\insertshortauthor\expandafter\ifblank\expandafter{\beamer@shortinstitute}{}{~~(\insertshortinstitute)}
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.4\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+      \usebeamerfont{title in head/foot}\insertshorttitle
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.1\paperwidth,ht=2.25ex,dp=1ex,center]{page number in head/foot}%
+      \usebeamerfont{page number in head/foot}\insertframenumber{} / \inserttotalframenumber
+    \end{beamercolorbox}%
+  }%
+  \vskip0pt%
+}
+\makeatother
+\beamertemplatenavigationsymbolsempty
+
+% -----------------------------------------------------------
+% Comandos para imágenes
+% -----------------------------------------------------------
+\newcommand{\imgfill}[1]{%
+  \begin{center}
+    \adjustbox{max height=0.5\textheight, keepaspectratio}{%
+      \includegraphics{#1}%
+    }%
+  \end{center}
+}
+\newcommand{\imgfillAuto}[1]{%
+  \smallskip
+  \newlength{\available}
+  \setlength{\available}{\dimexpr \textheight - \pagetotal - 1em \relax}
+  \begin{center}
+    \includegraphics[width=\textwidth, height=\available, keepaspectratio]{#1}%
+  \end{center}
+  \smallskip
+}
+
+% -----------------------------------------------------------
+% Metadatos del documento
+% -----------------------------------------------------------
+\title[SO — Unidad 1]{\textbf{Sistemas Operativos} \\ \textit{Unidad 1, Clase 1: Introducción a los Sistemas Operativos}}
+\author[Rodrigo Fuchs Miranda]{Rodrigo Fuchs Miranda}
+\institute[Lic.\ en Ing.\ de Datos e IA]{Licenciatura en Ingeniería de Datos e Inteligencia Artificial}
+\date{9 de marzo de 2026}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+% -----------------------------------------------------------
+% Portada
+% -----------------------------------------------------------
+\begin{frame}
+  \titlepage
+  \begin{center}
+  \vspace{-10pt}
+    \includegraphics[height=3.5cm]{logo.jpg}
+  \end{center}
+\end{frame}
+
+% -----------------------------------------------------------
+% Índice
+% -----------------------------------------------------------
+\begin{frame}{¿Qué vemos hoy?}
+  \tableofcontents
+\end{frame}
+
+% ============================================================
+\section{Presentación de la asignatura}
+% ============================================================
+
+\begin{frame}{Presentación de la asignatura}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \textbf{Clases:}
+      \begin{itemize}
+        \item[\textcolor{mqred}{\ding{228}}] Lunes: 10:10 -- 12:10
+        \item[\textcolor{mqred}{\ding{228}}] Viernes: 10:10 -- 12:10
+      \end{itemize}
+      \vspace{0.4cm}
+      \textbf{Modalidad:}
+      \begin{itemize}
+        \item[\textcolor{mqred}{\ding{72}}] Clase teórica: Salón 1A/1B
+        \item[\textcolor{mqred}{\ding{72}}] Clase práctica:\\ Lunes: Lab. de Informática - UTU \\ Viernes: Lab. de Informática – Edificio Principal
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \textbf{Evaluación:}
+      \begin{itemize}
+        \item[\textcolor{mqred}{\ding{51}}] \textbf{PE} (30\,\%) — 11 de mayo
+        \item[\textcolor{mqred}{\ding{51}}] \textbf{SE} (30\,\%) — 26 de junio
+        \item[\textcolor{mqred}{\ding{51}}] \textbf{EC} (40\,\%) — Trabajos en clase y entregas a lo largo del semestre
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -----------------------------------------------------------
+\begin{frame}{Objetivos del curso}
+  Al finalizar la asignatura, el estudiante será capaz de:
+  \begin{itemize}
+    \item[\textcolor{mqred}{\ding{228}}] \textbf{Comprender} la historia, evolución y funciones de los Sistemas Operativos.
+    \item[\textcolor{mqred}{\ding{228}}] \textbf{Analizar} la administración de procesos, memoria y entrada/salida.
+    \item[\textcolor{mqred}{\ding{228}}] \textbf{Conocer} los sistemas de archivos y los mecanismos de seguridad.
+    \item[\textcolor{mqred}{\ding{228}}] \textbf{Explorar} técnicas de virtualización y contenedores.
+  \end{itemize}
+\end{frame}
+
+% -----------------------------------------------------------
+\begin{frame}{Contenidos y bibliografía}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      \begin{itemize}
+        \item[\textcolor{mqred}{\ding{228}}] \textbf{Unidad 1:} Introducción a los S.O.
+        \item[\textcolor{mqred}{\ding{228}}] \textbf{Unidad 2:} Administración de Procesos
+        \item[\textcolor{mqred}{\ding{228}}] \textbf{Unidad 3:} Gestión de Memoria
+        \item[\textcolor{mqred}{\ding{228}}] \textbf{Unidad 4:} Administración de E/S
+        \item[\textcolor{mqred}{\ding{228}}] \textbf{Unidad 5:} Sistemas de Archivos y Seguridad
+        \item[\textcolor{mqred}{\ding{228}}] \textbf{Unidad 6:} Virtualización y Contenedores
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.45\textwidth}
+      \begin{center}
+        \begin{tikzpicture}
+          \node[draw=black, thick] {\includegraphics[width=0.45\linewidth]{biblio1.png}};
+        \end{tikzpicture}
+        \hspace{0.3cm}
+        \begin{tikzpicture}
+          \node[draw=black, thick] {\includegraphics[width=0.46\linewidth]{biblio2.png}};
+        \end{tikzpicture}
+      \end{center}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+\section{¿Para qué sirve un Sistema Operativo?}
+% ============================================================
+
+% -----------------------------------------------------------
+%  Pregunta disparadora
+% -----------------------------------------------------------
+\begin{frame}{Una pregunta para arrancar}
+  \begin{center}
+    \Large
+    \textbf{¿Qué pasaría si tu celular\\no tuviera sistema operativo?}
+  \end{center}
+  \vspace{0.5cm}
+  \begin{itemize}
+    \item No habría aplicaciones en ejecución.
+    \item No habría pantalla táctil, Wi-Fi ni notificaciones.
+    \item El hardware estaría ahí, pero \textbf{nadie lo gestionaría}.
+  \end{itemize}
+  \vspace{0.4cm}
+  \begin{center}
+    \textit{El S.O. es la capa que hace que el hardware sea útil.}
+  \end{center}
+\end{frame}
+
+% -----------------------------------------------------------
+%  El S.O. en el contexto de la máquina
+% -----------------------------------------------------------
+\begin{frame}{La computadora como un sistema en capas}
+  \begin{columns}[T]
+    \begin{column}{0.55\textwidth}
+      Una computadora moderna integra:
+      \begin{itemize}
+        \item Procesador(es), memoria y dispositivos de E/S
+        \item Tal como vimos en \textbf{Arquitectura de Computadoras}
+      \end{itemize}
+      \vspace{0.3cm}
+      El \textbf{Sistema Operativo} es la capa intermedia entre el hardware y las aplicaciones:
+      \begin{itemize}
+        \item Abstrae los detalles del hardware
+        \item Administra los recursos disponibles
+        \item Brinda servicios a los programas de usuario
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      \begin{center}
+        \includegraphics[width=\columnwidth, keepaspectratio]{so_interfaz.png}
+      \end{center}
+      % Figura: diagrama de capas (hardware → SO → aplicaciones → usuario)
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -----------------------------------------------------------
+%  Definición dual: máquina extendida + administrador
+% -----------------------------------------------------------
+\begin{frame}[allowframebreaks]{¿Qué es un Sistema Operativo?}
+
+  El autor Tanenbaum define el S.O.\ desde \textbf{dos perspectivas complementarias}:
+
+  \vspace{0.3cm}
+
+  \begin{block}{1. El S.O. como máquina extendida}
+    Oculta los detalles complejos del hardware y ofrece al programador
+    herramientas más sencillas para trabajar.\\[4pt]
+    \textit{Analogía:} así como un auto tiene volante y pedales (y no necesitás
+    entender el motor para manejarlo), el S.O.\ te da \textbf{archivos,
+    procesos y conexiones de red} sin que tengas que programar
+    directamente sobre el disco, la CPU o la placa de red.
+  \end{block}
+
+  \vspace{0.3cm}
+
+  \begin{block}{2. El S.O. como administrador de recursos}
+    Gestiona y reparte \textbf{CPU, memoria y dispositivos de E/S}
+    entre todos los programas que se ejecutan al mismo tiempo,
+    garantizando que ninguno bloquee ni dañe al resto.
+  \end{block}
+
+\end{frame}
+
+% -----------------------------------------------------------
+\begin{frame}{¿Qué es un Sistema Operativo? }
+
+  En síntesis: el S.O.\ es el \textbf{software} que gestiona los recursos del \textbf{hardware} y ofrece a los programas una interfaz estandarizada para utilizarlos.
+
+  \vspace{0.3cm}
+
+  \begin{center}
+    \includegraphics[width=0.75\textwidth, keepaspectratio]{so_interfaz2.png}
+  \end{center}
+  % Figura: diagrama clásico de Tanenbaum mostrando el S.O. entre hardware y aplicaciones
+
+\end{frame}
+
+% -----------------------------------------------------------
+%  Llamadas al sistema
+% -----------------------------------------------------------
+\begin{frame}{Las llamadas al sistema (\textit{system calls})}
+
+  Los programas de usuario no pueden acceder directamente al hardware.\\
+  Para pedir un servicio al S.O., utilizan las \textbf{llamadas al sistema}.
+
+  \vspace{0.3cm}
+
+  \begin{exampleblock}{Ejemplo cotidiano}
+    Cuando una aplicación quiere guardar un archivo, no escribe directamente en el disco. Hace una \textbf{llamada al sistema} (\texttt{write}) y el S.O.\ se encarga del resto.
+  \end{exampleblock}
+
+  \vspace{0.3cm}
+
+  \begin{itemize}
+    \item Las llamadas al sistema son la \textbf{interfaz formal} entre los programas y el S.O.
+    \item Veremos esto en detalle más adelante en el curso.
+  \end{itemize}
+
+\end{frame}
+
+% ============================================================
+\section{Interfaces de usuario y modos de operación}
+% ============================================================
+
+\begin{frame}{Interfaz de usuario: Shell vs.\ GUI}
+  Los usuarios no interactúan directamente con el \textbf{kernel}, sino a través de programas de interfaz:
+
+  \vspace{0.3cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Shell (interfaz de texto)}
+        Intérprete de comandos: el usuario escribe instrucciones que el shell traduce y envía al S.O.\\
+        \textit{Ej.: bash, zsh, PowerShell}
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{GUI (\textit{Graphical User Interface})}
+        Entorno visual: ventanas, íconos y ratón.\\
+        \textit{Ej.: Windows 11, macOS, GNOME}
+      \end{block}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.4cm}
+  \begin{alertblock}{Importante}
+    El shell y la GUI \textbf{no son parte del kernel}: son programas de usuario que usan los servicios del S.O.
+  \end{alertblock}
+\end{frame}
+
+% -----------------------------------------------------------
+\begin{frame}{Modo kernel vs.\ modo usuario}
+
+  Para proteger el sistema, la CPU opera en dos modos distintos:
+
+  \vspace{0.3cm}
+
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Modo kernel (supervisor)}
+        \begin{itemize}
+          \item El núcleo del S.O.\ tiene \textbf{acceso completo} al hardware.
+          \item Puede ejecutar instrucciones privilegiadas.
+          \item Gestiona memoria, dispositivos e interrupciones.
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Modo usuario}
+        \begin{itemize}
+          \item Las aplicaciones se ejecutan con \textbf{privilegios restringidos}.
+          \item Si necesitan algo privilegiado, hacen una llamada al sistema.
+          \item El S.O.\ cambia a modo kernel, atiende la solicitud y regresa.
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
+
+  \vspace{0.4cm}
+  Esta separación evita que un programa dañe o bloquee toda la máquina.
+
+\end{frame}
+
+% ============================================================
+\section{Clasificación de los Sistemas Operativos}
+% ============================================================
+
+\begin{frame}{¿De qué tipo puede ser un S.O.?}
+
+  Los sistemas operativos se clasifican según su \textbf{propósito y entorno de uso}:
+
+  \vspace{0.2cm}
+
+  \begin{itemize}
+    \item[\textcolor{mqred}{\ding{228}}] \textbf{Por lotes (\textit{batch}):} trabajan en secuencia sin interacción del usuario. \textit{Ej.: primeros mainframes.}
+    \item[\textcolor{mqred}{\ding{228}}] \textbf{De tiempo compartido (\textit{timesharing}):} varios usuarios interactivos comparten la CPU. \textit{Ej.: UNIX, CTSS.}
+    \item[\textcolor{mqred}{\ding{228}}] \textbf{De tiempo real:} responden en plazos muy acotados y predecibles. \textit{Ej.: control de robots, aviónica.}
+    \item[\textcolor{mqred}{\ding{228}}] \textbf{Empotrados (\textit{embedded}):} dispositivos con recursos limitados y función específica. \textit{Ej.: electrodomésticos inteligentes.}
+    \item[\textcolor{mqred}{\ding{228}}] \textbf{Distribuidos:} cooperan en red formando un sistema coordinado.
+    \item[\textcolor{mqred}{\ding{228}}] \textbf{Móviles:} orientados a smartphones y tablets. \textit{Ej.: Android, iOS.}
+  \end{itemize}
+
+\end{frame}
+
+% ============================================================
+\section{Evolución histórica de los Sistemas Operativos}
+% ============================================================
+
+\begin{frame}{Evolución histórica: panorama general}
+  \vspace{0.2cm}
+  \setbeamercolor{gen1}{bg=mqred!15, fg=black}
+  \setbeamercolor{gen2}{bg=mqred!25, fg=black}
+  \setbeamercolor{gen3}{bg=mqred!38, fg=black}
+  \setbeamercolor{gen4}{bg=mqred!52, fg=black}
+  \setbeamercolor{gen5}{bg=mqred!70, fg=white}
+
+  \begin{beamercolorbox}[wd=\textwidth, ht=0.55cm, dp=0.2cm, center, rounded=true]{gen1}
+    \textbf{1ª gen. (1945--1955)} \quad Sin S.O., tubos de vacío
+  \end{beamercolorbox}\vspace{0.15cm}
+
+  \begin{beamercolorbox}[wd=\textwidth, ht=0.55cm, dp=0.2cm, center, rounded=true]{gen2}
+    \textbf{2ª gen. (1955--1965)} \quad Transistores y sistemas en lote
+  \end{beamercolorbox}\vspace{0.15cm}
+
+  \begin{beamercolorbox}[wd=\textwidth, ht=0.55cm, dp=0.2cm, center, rounded=true]{gen3}
+    \textbf{3ª gen. (1965--1980)} \quad Multiprogramación y timesharing
+  \end{beamercolorbox}\vspace{0.15cm}
+
+  \begin{beamercolorbox}[wd=\textwidth, ht=0.55cm, dp=0.2cm, center, rounded=true]{gen4}
+    \textbf{4ª gen. (1980--2000)} \quad PC y GUI
+  \end{beamercolorbox}\vspace{0.15cm}
+
+  \begin{beamercolorbox}[wd=\textwidth, ht=0.55cm, dp=0.2cm, center, rounded=true]{gen5}
+    \textbf{5ª gen. (2000--hoy)} \quad Movilidad y computación en la nube
+  \end{beamercolorbox}
+\end{frame}
+
+% -----------------------------------------------------------
+\subsection{Primera generación (1945--1955)}
+\begin{frame}{1ª generación (1945--1955): las máquinas sin S.O.}
+  \begin{itemize}
+    \item Computadoras construidas con \textbf{tubos de vacío}. Sin sistema operativo.
+    \item El usuario era también el programador: conectaba cables y configuraba la máquina a mano (plugboards) o ingresaba código binario directamente.
+    \item Un solo usuario a la vez: \textbf{sin multitarea, sin memoria protegida}.
+    \item Uso casi exclusivo en cálculos científicos y militares.
+    \item \textbf{ENIAC (1946):} $\sim$18.000 válvulas, programación totalmente manual.
+  \end{itemize}
+  \vspace{0.3cm}
+  \begin{center}
+    \textit{El tiempo de CPU era tan valioso que el programador debía reservar la sala de máquinas con anticipación.}
+  \end{center}
+\end{frame}
+
+% -----------------------------------------------------------
+\subsection{Segunda generación (1955--1965)}
+\begin{frame}{2ª generación (1955--1965): sistemas en lote}
+  \begin{itemize}
+    \item Reemplazo de tubos por \textbf{transistores}: máquinas más rápidas y confiables.
+    \item Los trabajos se organizan en \textbf{lotes de tarjetas perforadas}, minimizando el tiempo ocioso de la CPU.
+    \item Aparecen los primeros \textbf{monitores residentes}: programas básicos que cargan automáticamente el siguiente trabajo del lote.
+    \item No había interacción del usuario durante la ejecución.
+    \item Ejemplo: \textbf{IBM 7094} con \textbf{FMS} (\textit{Fortran Monitor System}).
+  \end{itemize}
+  \begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{geracao2.png}
+  \end{figure}
+\end{frame}
+
+% -----------------------------------------------------------
+\begin{frame}{Estructura de un trabajo en FMS}
+  Los trabajos se definían mediante \textbf{tarjetas de control}:
+  \begin{itemize}
+    \item \textbf{\$JOB} — inicio del trabajo, identifica al usuario
+    \item \textbf{\$FORTRAN} — indica al sistema que compile el programa en Fortran
+    \item \textbf{\$LOAD} — carga el programa compilado en memoria
+    \item \textbf{\$RUN} — ejecuta el programa
+    \item \textbf{\$END} — fin del trabajo; el monitor carga el siguiente lote
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.55\textwidth]{fortran.png}
+  \end{center}
+  % Figura: diagrama de tarjetas de control del FMS (Tanenbaum, Fig. 1-3)
+\end{frame}
+
+% -----------------------------------------------------------
+\subsection{Tercera generación (1965--1980)}
+\begin{frame}{3ª generación (1965--1980): multiprogramación y timesharing}
+  \begin{columns}[T]
+    \begin{column}{0.65\textwidth}
+    \small   
+      \begin{itemize}
+        \item \textbf{Multiprogramación:} varios programas cargados en memoria simultáneamente; mientras uno espera E/S, otro usa la CPU.
+        \item \textbf{Timesharing:} múltiples usuarios interactivos comparten la CPU en turnos muy rápidos, simulando exclusividad.
+        \item \textbf{IBM 360:} familia unificada para uso científico y comercial. Primer intento serio de estandarización.
+        \item \textbf{MULTICS:} proyecto muy ambicioso, influyó en el diseño de sistemas posteriores.
+        \item \textbf{UNIX (Bell Labs):} más simple y portable que MULTICS, se populariza en universidades y es ancestro de Linux, macOS y Android.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.35\textwidth}
+      \begin{center}
+        \includegraphics[width=\columnwidth, keepaspectratio]{tercera.png}
+      \end{center}
+      % Figura: IBM 360 o diagrama de multiprogramación
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% -----------------------------------------------------------
+\subsection{Cuarta generación (1980--2000)}
+\begin{frame}{4ª generación (1980--2000): la PC y la GUI}
+  \begin{itemize}
+    \item Nacen las \textbf{computadoras personales} (PC) asequibles para el público masivo, gracias a microprocesadores como el Intel 8080 y el Motorola 68000.
+    \item Sistemas operativos de línea de comandos: \textbf{CP/M}, \textbf{MS-DOS}.
+    \item Apple Macintosh (1984) y luego \textbf{Windows} popularizan la \textbf{GUI}: ventanas, íconos, ratón — sin necesidad de memorizar comandos.
+    \item Amplia adopción en hogares, oficinas y educación.
+    \item Aparece \textbf{Linux} (1991, Linus Torvalds): kernel libre que hoy sustenta servidores, Android y supercomputadoras.
+  \end{itemize}
+\end{frame}
+
+% -----------------------------------------------------------
+\subsection{Quinta generación (2000--presente)}
+\begin{frame}{5ª generación (2000--hoy): movilidad y cloud}
+  \begin{itemize}
+    \item \textbf{Dispositivos móviles:} Android e iOS gestionan pantallas táctiles, GPS, cámara, conectividad y batería — todo en un bolsillo.
+    \item \textbf{Computación en la nube:} los S.O.\ deben gestionar miles de servidores virtuales en grandes centros de datos.
+    \item \textbf{Virtualización y contenedores:} Docker, Kubernetes y las máquinas virtuales permiten aislar y escalar servicios de forma eficiente.
+    \item Linux y Windows Server dominan como base en infraestructura cloud.
+    \item Los S.O.\ modernos priorizan \textbf{seguridad, escalabilidad y eficiencia energética}.
+  \end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Actividad y cierre}
+% ============================================================
+
+\begin{frame}{Actividad: ¿Con o sin S.O.?}
+
+  \textbf{De forma individual:} para cada situación, decidí si hay un S.O.\ involucrado o no, y anotá por qué.
+
+  \vspace{0.3cm}
+
+  \begin{enumerate}
+    \item Apretás el botón de encendido de tu celular.
+    \item Una calculadora de bolsillo suma dos números.
+    \item Netflix te recomienda una película.
+    \item Un semáforo cambia de rojo a verde.
+    \item Escribís un documento en Word.
+  \end{enumerate}
+
+  \vspace{0.3cm}
+  \begin{alertblock}{Para pensar}
+    ¿Qué criterio usaste para decidir si hay S.O.\ o no?
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}{Actividad: respuestas y discusión}
+
+  \begin{itemize}
+    \item[\textcolor{mqred}{\ding{51}}] \textbf{Celular encendiendo} — \textit{Sí.} Es el proceso de arranque (\textit{boot}) del S.O.
+    \item[\textcolor{mqred}{\ding{55}}] \textbf{Calculadora de bolsillo} — \textit{No.} Es un circuito lógico dedicado, sin gestión de recursos ni procesos.
+    \item[\textcolor{mqred}{\ding{51}}] \textbf{Netflix} — \textit{Sí.} Los servidores corren Linux; tu dispositivo usa su propio S.O.\ para mostrarte el video.
+    \item[\textcolor{mqred}{\ding{228}}] \textbf{Semáforo} — \textit{Depende.} Los semáforos modernos e interconectados tienen un S.O.\ embebido de tiempo real. Los más simples son solo un temporizador sin S.O.
+    \item[\textcolor{mqred}{\ding{51}}] \textbf{Word} — \textit{Sí.} Word es una aplicación que corre sobre el S.O., el cual gestiona memoria, teclado y disco.
+  \end{itemize}
+
+  \vspace{0.2cm}
+  \begin{exampleblock}{Conclusión}
+    No todo dispositivo electrónico tiene S.O. Lo que define su presencia es la necesidad de \textbf{gestionar recursos} y ejecutar \textbf{múltiples procesos}.
+  \end{exampleblock}
+
+\end{frame}
+
+% -----------------------------------------------------------
+\begin{frame}{Cierre y síntesis de la clase}
+
+  \textbf{¿Qué vimos hoy?}
+
+  \vspace{0.3cm}
+
+  \begin{itemize}
+    \item[\textcolor{mqred}{\ding{51}}] El S.O.\ actúa como \textbf{máquina extendida} (oculta la complejidad del hardware) y como \textbf{administrador de recursos} (gestiona CPU, memoria y E/S).
+    \item[\textcolor{mqred}{\ding{51}}] Los programas se comunican con el S.O.\ a través de \textbf{llamadas al sistema}.
+    \item[\textcolor{mqred}{\ding{51}}] La separación entre \textbf{modo kernel} y \textbf{modo usuario} protege al sistema.
+    \item[\textcolor{mqred}{\ding{51}}] Los S.O.\ se clasifican según su entorno de uso: lote, tiempo compartido, tiempo real, embebido, distribuido, móvil.
+    \item[\textcolor{mqred}{\ding{51}}] La evolución histórica va desde máquinas sin S.O.\ hasta entornos virtualizados en la nube.
+  \end{itemize}
+
+  \vspace{0.3cm}
+  \begin{center}
+    \textbf{Próxima clase:} funciones del S.O.\ en detalle y discusión guiada.
+  \end{center}
+
+\end{frame}
+
+% ============================================================
+\section{Glosario de términos}
+% ============================================================
+
+\begin{frame}{Glosario (I)}
+  \begin{description}[labelwidth=3.2cm, leftmargin=!, font=\color{mqred}\bfseries]
+    \item[Sistema Operativo] Software que gestiona el hardware de una computadora
+      y provee servicios a los programas de usuario.
+    \item[Kernel] Núcleo del S.O.; la parte que corre con máximos privilegios
+      y controla directamente el hardware.
+    \item[Hardware] Componentes físicos de la computadora: procesador, memoria,
+      disco, teclado, pantalla, etc.
+    \item[Proceso] Un programa en ejecución. El S.O.\ administra cuándo y cómo
+      cada proceso usa la CPU y la memoria.
+    \item[Abstracción] Simplificación de algo complejo: el S.O.\ oculta los
+      detalles del hardware y ofrece herramientas más fáciles de usar.
+    \item[Llamada al sistema] Mecanismo formal por el cual un programa le pide
+      un servicio al S.O.\ (ej.: leer un archivo, enviar datos por la red).
+  \end{description}
+\end{frame}
+
+\begin{frame}{Glosario (II)}
+  \begin{description}[labelwidth=3.2cm, leftmargin=!, font=\color{mqred}\bfseries]
+    \item[Modo kernel] Modo de operación de la CPU en el que el S.O.\ tiene
+      acceso total al hardware. Solo el kernel puede ejecutar instrucciones
+      privilegiadas.
+    \item[Modo usuario] Modo restringido en el que corren las aplicaciones.
+      Para acceder al hardware deben pasar por el kernel.
+    \item[Shell] Programa de interfaz de texto que interpreta comandos del
+      usuario y los envía al S.O.\ (ej.: bash, zsh).
+    \item[GUI] \textit{Graphical User Interface}: interfaz visual con ventanas,
+      íconos y ratón. No forma parte del kernel.
+    \item[Multiprogramación] Técnica que permite tener varios programas cargados
+      en memoria al mismo tiempo, aprovechando la CPU cuando uno espera E/S.
+    \item[Timesharing] Variante de multiprogramación donde varios usuarios
+      interactivos comparten la CPU en turnos muy rápidos.
+  \end{description}
+\end{frame}
+
+\begin{frame}{Glosario (III)}
+\small
+  \begin{description}[labelwidth=3.2cm, leftmargin=!, font=\color{mqred}\bfseries]
+    \item[E/S (Entrada/Salida)] Operaciones que intercambian datos entre la CPU
+      y dispositivos externos: disco, teclado, pantalla, red, etc.
+    \item[Sistema en lote] S.O.\ que procesa trabajos en secuencia, sin
+      interacción del usuario durante la ejecución.
+    \item[S.O.\ embebido] S.O.\ diseñado para dispositivos con recursos
+      limitados y función específica (ej.: un electrodoméstico inteligente).
+    \item[Virtualización] Técnica que permite ejecutar múltiples sistemas
+      operativos o entornos aislados sobre el mismo hardware físico.
+    \item[Contenedor] Entorno de ejecución aislado que comparte el mismo kernel
+      del S.O.\ anfitrión. Más liviano que una máquina virtual.
+      \textit{Ej.: Docker.}
+    \item[UNIX] Sistema operativo creado en Bell Labs (1969), ancestro de Linux,
+      macOS y Android. Base conceptual de gran parte del software moderno.
+  \end{description}
+\end{frame}
+
+% ============================================================
+\end{document}
+% ============================================================

@@ -1,0 +1,46 @@
+# PDFs de libros y materiales con copyright
+*.pdf
+!layout_example.pdf
+
+# Archivos de compilacion LaTeX
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc
+*.bcf
+*.run.xml
+*.bbl
+*.blg
+_minted-*/
+
+# Planillas con planificacion personal
+*.xlsx
+*.xls
+*.ods
+
+# Memoria persistente del proyecto (personal)
+docs/memoria_projeto.md
+.claude/projects/
+
+# Carpeta de corpus y manifests (datos locales pesados)
+admin/
+
+# Archivos de figura extraidos del libro (copyright)
+fig*.png
+fig*.jpg
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de slides ya producidos (solo compartir el framework)
+2026-1/
